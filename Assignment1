@@ -1,0 +1,25 @@
+import pandas as pd
+
+import io
+import requests
+url="https://data.medicaid.gov/api/views/mmgn-kvy5/rows.csv?accessType=DOWNLOAD"
+s=requests.get(url).content
+c=pd.read_csv(io.StringIO(s.decode('utf-8')))
+
+df = pd.read_csv("https://data.medicaid.gov/api/views/mmgn-kvy5/rows.csv?accessType=DOWNLOAD", low_memory=False)
+
+df.head()
+
+df.head(10)
+
+df.tail()
+
+df.tail(10)
+
+df.columns
+
+type(df)
+
+df.shape
+
+df.groupby(['State', 'Year'])[['Medicaid Amount Reimbursed', 'Non Medicaid Amount Reimbursed']].mean()
