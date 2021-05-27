@@ -1,0 +1,43 @@
+import pandas as pd
+
+scientists = pd.read_csv('https://raw.githubusercontent.com/chendaniely/\
+pandas_for_everyone/master/data/scientists.csv')
+
+scientists
+
+born_datetime = pd.to_datetime(scientists['Born'], format='%Y-%m-%d')
+
+born_datetime
+
+scientists['born_dt'] = born_datetime
+
+scientists
+
+scientists['oldest'] = scientists.iloc[0,1]
+
+scientists
+
+oldest_dt = pd.to_datetime(scientists['oldest'], format='%Y-%m-%d')
+
+oldest_dt
+
+scientists['oldest_dt'] = oldest_dt
+
+scientists
+
+scientists.dtypes
+
+scientists['Difference'] = scientists['oldest_dt'] - scientists['born_dt']
+scientists
+
+scientists ['Difference in Months'] = (scientists['Difference']/30.417)
+scientists
+
+scientists = scientists.drop(['oldest', 'Born'], axis=1)
+
+scientists
+
+from google.colab import drive
+drive.mount('/drive')
+
+scientists.to_csv('/drive/My Drive/Colab Notebooks/KaitlynPropstAssignment2DataMining')
