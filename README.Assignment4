@@ -1,0 +1,43 @@
+import pandas as pd
+
+import io
+import requests
+url="https://data.medicaid.gov/api/views/mmgn-kvy5/rows.csv?accessType=DOWNLOAD"
+s=requests.get(url).content
+c=pd.read_csv(io.StringIO(s.decode('utf-8')))
+
+df = pd.read_csv("https://data.medicaid.gov/api/views/mmgn-kvy5/rows.csv?accessType=DOWNLOAD", low_memory=False)
+#Import data set one
+
+df.head()
+
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df2 = sns.load_dataset("anscombe")
+#import data set two
+
+print(df2)
+
+row_concat = pd.concat([df, df2])
+
+print(row_concat)
+#put data sets together in a list
+
+df3 = row_concat
+
+print(df3)
+#print newly combined data sets
+df3.isnull().sum()
+#Count the sum of the missing values in each row
+df4 = df.append(df2)
+print(df4)
+#see if using append makes a difference
+print(df4.fillna(0).iloc[0:10, 0:23])
+#Fill NaN values with 0
+df5 = df4.fillna(0).iloc[0:10, 0:23]
+df5.tail(10)
+
+#The first data set has a lot of rows so I showed the first ten rows and the last ten, but it safe to assume that all NaN values have been replaced with 0s. 
+#I chose this instead of dropna() because it would remove all of the dataset since all of the rows have NaN values.
