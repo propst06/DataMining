@@ -1,0 +1,29 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+
+
+import io
+import requests
+url="https://data.medicaid.gov/api/views/mmgn-kvy5/rows.csv?accessType=DOWNLOAD"
+s=requests.get(url).content
+c=pd.read_csv(io.StringIO(s.decode('utf-8')))
+
+df = pd.read_csv("https://data.medicaid.gov/api/views/mmgn-kvy5/rows.csv?accessType=DOWNLOAD", low_memory=False)
+
+df.dtypes
+#List column types
+
+df['supp_string'] = df['Suppression Used'].astype(str)
+#Convert a column to string by creating new column
+
+df.dtypes
+#Show list again showing new column
+
+#Supp_string is now an object instad of a bool
+
+df['state_cat'] = df['State'].astype('category')
+#Convert a non categorical column into a category by creating a new column
+
+df.dtypes
+#Show the list again to show the new column has been added and is a category
