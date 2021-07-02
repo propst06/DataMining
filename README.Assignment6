@@ -1,0 +1,73 @@
+import pandas as pd
+import numpy as np
+
+import io
+import requests
+url="https://data.medicaid.gov/api/views/mmgn-kvy5/rows.csv?accessType=DOWNLOAD"
+s=requests.get(url).content
+c=pd.read_csv(io.StringIO(s.decode('utf-8')))
+
+df = pd.read_csv("https://data.medicaid.gov/api/views/mmgn-kvy5/rows.csv?accessType=DOWNLOAD", low_memory=False)
+
+df.head()
+
+import regex as re
+
+matches = re.findall('\w+', 'False')
+print(matches)
+#find matches using regex for the word False
+
+df.dtypes
+#check data types before trying to clean and use regex to fill in
+
+df['supp_string'] = df['Suppression Used'].astype(str)
+
+#convert column into string
+
+df.dtypes
+#check that it worked
+
+df.cleaned = df.replace(to_replace ='False', value = '0', regex = True)
+df['Sup_Used_Cleaned'] = df.cleaned
+
+df.head()
+#Attempt to use to_replace with regex=True to replace False with value 0 in column, create new column that is cleaned. This did not work and instead gave me an error and I tried multiple times to fix it but I couldn't figure it out. I've spent a couple days trying to fix this but I'm just turning it in with the error. Please provide insight on what I'm doing wrong, I've never used Regex before and I'm very discouraged. 
+
+import statistics
+
+def my_med(x):
+#Gives median of given value 
+    return np.median(x)
+
+def my_mode(x):
+#Gives mode of given value
+    return statistics.mode(x)
+
+def my_mean(x):
+#Gives mean of given value
+    return np.mean(x)
+
+def my_range(val_list):
+    min_val = min(val_list)
+    max_val = max(val_list)
+
+    return (min_val, max_val)
+
+median = df['Number of Prescriptions'].apply(my_median)
+print(median)
+#Using .apply run each formula created. There are a lot of rows in this dataset, so it will only show first and last five rows. I only picked one column to do this on because it would take too long to run it on all of the columns it could be ran on.
+
+mean = df['Number of Prescriptions'].apply(my_mean)
+print(mean)
+
+df['Number of Prescriptions'].dropna
+
+df['NumPresInt'] = df['Number of Prescriptions'].astype(int)
+
+mode = df['Number of Prescriptions'].apply(my_mode)
+print(mode)
+#I can't calculate the mode because there are too many null values to convert this column into an int type and that is what this requires in order to calculate the mode. This is a dataframe problem, not a code problem.
+
+range = df['Number of Prescriptions'].apply(my_range)
+print(range)
+#this is running into the same issue with my dataset, there are too many null values to calculate the range because I can't convert it into an integer. 
