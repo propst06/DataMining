@@ -1,0 +1,32 @@
+import numpy as np
+import pandas as pd
+
+import io
+import requests
+url="https://data.medicaid.gov/api/views/mmgn-kvy5/rows.csv?accessType=DOWNLOAD"
+s=requests.get(url).content
+c=pd.read_csv(io.StringIO(s.decode('utf-8')))
+
+df = pd.read_csv("https://data.medicaid.gov/api/views/mmgn-kvy5/rows.csv?accessType=DOWNLOAD", low_memory=False)
+
+df.head()
+#Show 10 columns of dataset
+df.columns
+#show list of column names
+def summarize_data(g):
+  return(
+    pd.Series({
+      "avg_year": g.Year.mean(),
+      "min_year": g.Year.min(),
+      "max_year": g.Year.max(),
+      "sample_count": len(g),
+      "mix": g.Quarter.sum()/df.Quarter.sum(),
+    })
+  )
+
+df.groupby("Quarter").apply(summarize_data)
+#show average year, smallest year available, largest year available, how many samples fall into that quarter
+
+g becomes a new table of the original dataframe df. 
+
+When I applied summarize_data() to my dataframe, I had limited choices with the columns to use. Therefore, I used Quarter and Year, however all of this information was gathered in the year 2010. I would have liked to use Units Reimbursed, but I can't transform the type of data that column is into an int64 because of the null values, even after using df.dropna(). This particular dataset is frustrating to work with at the level of Python I'm comfortable with. With that in mind, the code did work in separating the quarters and applying the formulas, it's just that there wasn't a variety of data to work with. 
